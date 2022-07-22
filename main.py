@@ -1,6 +1,9 @@
 from googletrans import Translator
 import pathlib
 import pdfplumber
+import os
+from reportlab.lib.pagesizes import LETTER
+from reportlab.pdfgen.canvas import Canvas
 from gtts import gTTS
 
 
@@ -14,9 +17,13 @@ def pdf_translator(src_path):
         print(src_text)
         translator = Translator()
         res_text = translator.translate(src_text)
-        #with pdfplumber.PDF(open(file=res_path, mode='wb')) as res_pdf:
         print(res_text.text)
-
+        os.chdir('res_path')
+        canvas = Canvas('result.pdf', pagesize=LETTER)
+        canvas.setPageSize((400, 400))
+        canvas.setFont("Times-Roman", 8)
+        canvas.drawString(10, 380, res_text.text)
+        canvas.save()
 
 
 def main():
